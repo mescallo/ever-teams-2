@@ -22,7 +22,7 @@ const HeaderSkeleton = () => {
 		<nav className="bg-white dark:bg-dark-high w-full nav-items--shadow fixed z-[999]">
 			<Container>
 				<div className="w-full flex justify-between items-center min-h-[70px]">
-					<Skeleton height={45} width={200} borderRadius={20} className="dark:bg-[#272930]" />
+					<Skeleton height={45} width={200} borderRadius={20} />
 					<div className="flex items-center space-x-5">
 						<div className="hidden sm:block">
 							<Skeleton height={45} width={175} borderRadius={20} className="dark:bg-[#272930]" />
@@ -64,7 +64,7 @@ export function Navbar({
 
 	return (
 		<div>
-			{!user && !notFound && !publicTeam ? (
+			{user && !notFound && !publicTeam ? (
 				<HeaderSkeleton />
 			) : (
 				<nav

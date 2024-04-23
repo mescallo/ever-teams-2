@@ -31,7 +31,8 @@ interface Props {
 
 import { Poppins } from 'next/font/google';
 import GlobalSkeleton from '@components/ui/global-skeleton';
-
+import { SkeletonTheme } from 'react-loading-skeleton';
+import { useLocalStorage } from '@uidotdev/usehooks';
 const poppins = Poppins({
 	subsets: ['latin'],
 	weight: '500',
@@ -54,6 +55,7 @@ const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 	// Validate that the incoming `locale` parameter is valid
 	if (!locales.includes(locale as any)) notFound();
 	const router = useRouter();
+	const data = useLocalStorage('theme', null);
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const { isApiWork, loading } = useCheckAPI();
@@ -97,7 +99,7 @@ const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const messages = require(`../../messages/${locale}.json`);
-
+	console.log('one', JSON.stringify(data[0]));
 	useEffect(() => {
 		if (!isApiWork && !loading) router.push(`/maintenance`);
 		else if (isApiWork && pathname?.split('/').reverse()[0] === 'maintenance') router.replace('/');
@@ -122,22 +124,29 @@ const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 					</>
 				)}
 			</head> */}
-			<NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Kolkata">
-				<body className={clsx('flex h-full flex-col dark:bg-[#191A20]')}>
-					<RecoilRoot>
-						<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-							{loading ? (
-								<GlobalSkeleton />
-							) : (
-								<>
-									<AppState />
-									<JitsuRoot pageProps={pageProps}>{children}</JitsuRoot>
-								</>
-							)}
-						</ThemeProvider>
-					</RecoilRoot>
-				</body>
-			</NextIntlClientProvider>
+			<SkeletonTheme baseColor="#d6d6d6" highlightColor="#fff">
+				<NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Kolkata">
+					<body className={clsx('flex h-full flex-col dark:bg-[#191A20]')}>
+						<RecoilRoot>
+							<ThemeProvider
+								attribute="class"
+								defaultTheme="system"
+								enableSystem
+								disableTransitionOnChange
+							>
+								{loading ? (
+									<GlobalSkeleton />
+								) : (
+									<>
+										<AppState />
+										<JitsuRoot pageProps={pageProps}>{children}</JitsuRoot>
+									</>
+								)}
+							</ThemeProvider>
+						</RecoilRoot>
+					</body>
+				</NextIntlClientProvider>
+			</SkeletonTheme>
 		</html>
 	);
 };
