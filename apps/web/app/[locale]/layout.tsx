@@ -1,6 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 'use client';
-
 import clsx from 'clsx';
 import { notFound, useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
@@ -53,9 +52,9 @@ const poppins = Poppins({
 
 const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 	// Validate that the incoming `locale` parameter is valid
+	const data = useLocalStorage('theme', null);
 	if (!locales.includes(locale as any)) notFound();
 	const router = useRouter();
-	const data = useLocalStorage('theme', null);
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const { isApiWork, loading } = useCheckAPI();
@@ -99,7 +98,7 @@ const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const messages = require(`../../messages/${locale}.json`);
-	console.log('one', JSON.stringify(data[0]));
+	console.log('one', data);
 	useEffect(() => {
 		if (!isApiWork && !loading) router.push(`/maintenance`);
 		else if (isApiWork && pathname?.split('/').reverse()[0] === 'maintenance') router.replace('/');

@@ -14,8 +14,11 @@ import { Dispatch, FormEvent, FormEventHandler, SetStateAction, useCallback, use
 
 import stc from 'string-to-color';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-bar';
+import { useLocalStorage } from '@uidotdev/usehooks';
 
 function AuthPasscode() {
+	const data = useLocalStorage('theme', null);
+	console.log("data",data)
 	const form = useAuthenticationPasscode();
 	const t = useTranslations();
 	const router = useRouter();
@@ -264,6 +267,7 @@ function WorkSpaceScreen({ form, className }: { form: TAuthenticationPasscode } 
 			}, 100);
 		}
 	}, [form.workspaces]);
+	const accessToken = getAccessTokenCookie();
 
 	useEffect(() => {
 		if (form.authScreen.screen === 'workspace') {
@@ -273,22 +277,25 @@ function WorkSpaceScreen({ form, className }: { form: TAuthenticationPasscode } 
 			}
 		}
 	}, [form.authScreen, router]);
-
+	console.log('accessToken', accessToken);
 	return (
-		<WorkSpaceComponent
-			className={className}
-			workspaces={form.workspaces}
-			onSubmit={signInToWorkspace}
-			onBackButtonClick={() => {
-				form.authScreen.setScreen('email');
-				form.setErrors({});
-			}}
-			selectedWorkspace={selectedWorkspace}
-			setSelectedWorkspace={setSelectedWorkspace}
-			setSelectedTeam={setSelectedTeam}
-			selectedTeam={selectedTeam}
-			signInWorkspaceLoading={form.signInWorkspaceLoading}
-		/>
+		<>
+			<Button onClick={() => router.refresh()}>OnClick{accessToken}</Button>
+			<WorkSpaceComponent
+				className={className}
+				workspaces={form.workspaces}
+				onSubmit={signInToWorkspace}
+				onBackButtonClick={() => {
+					form.authScreen.setScreen('email');
+					form.setErrors({});
+				}}
+				selectedWorkspace={selectedWorkspace}
+				setSelectedWorkspace={setSelectedWorkspace}
+				setSelectedTeam={setSelectedTeam}
+				selectedTeam={selectedTeam}
+				signInWorkspaceLoading={form.signInWorkspaceLoading}
+			/>
+		</>
 	);
 }
 
@@ -318,7 +325,7 @@ export function WorkSpaceComponent(props: IWorkSpace) {
 					<Text.Heading as="h3" className="text-center">
 						{t('pages.auth.SELECT_WORKSPACE')}
 					</Text.Heading>
-					<ScrollArea  className='h-64 relative w-full pr-2 '>
+					<ScrollArea className="h-64 relative w-full pr-2 ">
 						<div className="flex flex-col gap-y-4 ">
 							{props.workspaces?.map((worksace, index) => (
 								<div
@@ -394,7 +401,7 @@ export function WorkSpaceComponent(props: IWorkSpace) {
 								</div>
 							))}
 						</div>
-<ScrollBar className='-pr-20'/>
+						<ScrollBar className="-pr-20" />
 					</ScrollArea>
 					<div className="flex items-center justify-between w-full">
 						<div className="flex flex-col space-y-2">
