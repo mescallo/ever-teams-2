@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 
 const GlobalSkeleton = () => {
 	const fullWidth = useRecoilValue(fullWidthState);
+
 	return (
 		<div className="h-screen">
 			{/* <div className="h-24 bg-white dark:bg-dark-high w-full"></div> */}

@@ -10,7 +10,6 @@ import { AppState } from 'lib/app/init-state';
 
 import 'react-loading-skeleton/dist/skeleton.css';
 import '../../styles/globals.css';
-import { ThemeProvider } from 'next-themes';
 import { JitsuRoot } from 'lib/settings/JitsuRoot';
 import { JitsuOptions } from '@jitsu/jitsu-react/dist/useJitsu';
 import { useCheckAPI } from '@app/hooks/useCheckAPI';
@@ -30,8 +29,8 @@ interface Props {
 
 import { Poppins } from 'next/font/google';
 import GlobalSkeleton from '@components/ui/global-skeleton';
-import { SkeletonTheme } from 'react-loading-skeleton';
-import { useLocalStorage } from '@uidotdev/usehooks';
+import { ThemeProvider, useTheme } from 'next-themes';
+import SkeletonThemeProvider from '@components/layout/SkeletonThemeProvider';
 const poppins = Poppins({
 	subsets: ['latin'],
 	weight: '500',
@@ -52,7 +51,8 @@ const poppins = Poppins({
 
 const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 	// Validate that the incoming `locale` parameter is valid
-	const data = useLocalStorage('theme', null);
+	const lll = useTheme();
+	console.log('filterfilter::', lll);
 	if (!locales.includes(locale as any)) notFound();
 	const router = useRouter();
 	const pathname = usePathname();
@@ -98,7 +98,6 @@ const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const messages = require(`../../messages/${locale}.json`);
-	console.log('one', data);
 	useEffect(() => {
 		if (!isApiWork && !loading) router.push(`/maintenance`);
 		else if (isApiWork && pathname?.split('/').reverse()[0] === 'maintenance') router.replace('/');
@@ -123,16 +122,11 @@ const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 					</>
 				)}
 			</head> */}
-			<SkeletonTheme baseColor="#d6d6d6" highlightColor="#fff">
-				<NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Kolkata">
-					<body className={clsx('flex h-full flex-col dark:bg-[#191A20]')}>
-						<RecoilRoot>
-							<ThemeProvider
-								attribute="class"
-								defaultTheme="system"
-								enableSystem
-								disableTransitionOnChange
-							>
+			<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+				<SkeletonThemeProvider>
+					<NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Kolkata">
+						<body className={clsx('flex h-full flex-col dark:bg-[#191A20]')}>
+							<RecoilRoot>
 								{loading ? (
 									<GlobalSkeleton />
 								) : (
@@ -141,11 +135,11 @@ const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 										<JitsuRoot pageProps={pageProps}>{children}</JitsuRoot>
 									</>
 								)}
-							</ThemeProvider>
-						</RecoilRoot>
-					</body>
-				</NextIntlClientProvider>
-			</SkeletonTheme>
+							</RecoilRoot>
+						</body>
+					</NextIntlClientProvider>
+				</SkeletonThemeProvider>
+			</ThemeProvider>
 		</html>
 	);
 };

@@ -1,3 +1,4 @@
+'use client';
 import { ReactNode } from 'react';
 
 import '../styles/globals.css';
@@ -10,4 +11,7 @@ type Props = {
 // is required, even if it's just passing children through.
 export default function RootLayout({ children }: Props) {
 	return children;
+	// <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+
+	// </ThemeProvider>
 }

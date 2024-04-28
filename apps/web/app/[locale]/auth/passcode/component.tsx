@@ -14,11 +14,11 @@ import { Dispatch, FormEvent, FormEventHandler, SetStateAction, useCallback, use
 
 import stc from 'string-to-color';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-bar';
-import { useLocalStorage } from '@uidotdev/usehooks';
+// import { useLocalStorage } from '@uidotdev/usehooks';
 
 function AuthPasscode() {
-	const data = useLocalStorage('theme', null);
-	console.log("data",data)
+	// const data = useLocalStorage('theme', null);
+	// console.log("data",data)
 	const form = useAuthenticationPasscode();
 	const t = useTranslations();
 	const router = useRouter();
@@ -267,7 +267,6 @@ function WorkSpaceScreen({ form, className }: { form: TAuthenticationPasscode } 
 			}, 100);
 		}
 	}, [form.workspaces]);
-	const accessToken = getAccessTokenCookie();
 
 	useEffect(() => {
 		if (form.authScreen.screen === 'workspace') {
@@ -277,10 +276,8 @@ function WorkSpaceScreen({ form, className }: { form: TAuthenticationPasscode } 
 			}
 		}
 	}, [form.authScreen, router]);
-	console.log('accessToken', accessToken);
 	return (
 		<>
-			<Button onClick={() => router.refresh()}>OnClick{accessToken}</Button>
 			<WorkSpaceComponent
 				className={className}
 				workspaces={form.workspaces}
