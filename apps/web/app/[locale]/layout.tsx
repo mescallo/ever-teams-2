@@ -127,7 +127,7 @@ const LocaleLayout = ({ children, params: { locale }, pageProps }: Props) => {
 					<NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Kolkata">
 						<body className={clsx('flex h-full flex-col dark:bg-[#191A20]')}>
 							<RecoilRoot>
-								{loading ? (
+								{!loading ? (
 									<GlobalSkeleton />
 								) : (
 									<>

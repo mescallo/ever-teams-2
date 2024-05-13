@@ -1,45 +1,68 @@
 import { fullWidthState } from '@app/stores/fullWidth';
 import { Container } from 'lib/components';
-import { Navbar } from 'lib/layout';
+import { HeaderSkeleton } from 'lib/layout';
+import { usePathname } from 'next/navigation';
 import React from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useRecoilValue } from 'recoil';
 
 const GlobalSkeleton = () => {
 	const fullWidth = useRecoilValue(fullWidthState);
-
+	const pathname = usePathname();
 	return (
 		<div className="h-screen">
-			{/* <div className="h-24 bg-white dark:bg-dark-high w-full"></div> */}
-			<Navbar showTimer={false} className="fixed z-[999]" publicTeam={false} notFound={false} />
-			<div className="bg-light--theme-dark dark:bg-dark--theme-light pt-28 w-full">
-				<Container fullWidth={fullWidth} className="flex justify-between mt-10">
-					<div className="flex justify-start gap-2">
-						<span className="w-24 h-6 bg-light--theme dark:bg-dark animate-pulse rounded-md" />
-						<span className="w-24 h-6 bg-light--theme dark:bg-dark animate-pulse rounded-md" />
+			{false ? (
+				<div className="flex">
+					<div className="w-1/2 bg-primary/60 h-screen">
+						<Skeleton className="m-4 ml-10" height={60} width={200} />
 					</div>
-					<div className="flex justify-end gap-2">
-						<span className="w-24 h-6 bg-light--theme dark:bg-dark animate-pulse rounded-md" />
-						<span className="w-24 h-6 bg-light--theme dark:bg-dark animate-pulse rounded-md" />
-					</div>
-				</Container>
-				{/* Task Input Skeleton */}
-				<Container fullWidth={fullWidth} className="pt-12 pb-24">
-					<div className="bg-white dark:bg-dark-high w-full h-36 animate-pulse rounded-xl" />
-				</Container>
-				<div className="flex justify-evenly items-center w-full pb-16">
-					<span className="w-24 h-6 bg-light--theme dark:bg-dark animate-pulse rounded-md" />
-					<span className="w-24 h-6 bg-light--theme dark:bg-dark animate-pulse rounded-md" />
-					<span className="w-24 h-6 bg-light--theme dark:bg-dark animate-pulse rounded-md" />
-					<span className="w-24 h-6 bg-light--theme dark:bg-dark animate-pulse rounded-md" />
+					<div className="w-1/2"></div>
 				</div>
-			</div>
-			<div className=" w-full py-4">
-				<Container fullWidth={fullWidth} className="flex flex-col items-stretch pt-4 gap-6">
-					<div className="bg-white dark:bg-dark-high w-full h-36 animate-pulse rounded-xl" />
-					<div className="bg-white dark:bg-dark-high w-full h-36 animate-pulse rounded-xl" />
-					<div className="bg-white dark:bg-dark-high w-full h-36 animate-pulse rounded-xl" />
-				</Container>
-			</div>
+			) : (
+				<>
+					<HeaderSkeleton />
+					<div className="bg-light--theme-dark dark:bg-dark--theme-light pt-8 w-full">
+						<Container fullWidth={fullWidth} className="flex justify-between">
+							<div className="flex justify-start gap-2">
+								<Skeleton width={35} height={35} />
+								<Skeleton width={135} height={35} />
+								<Skeleton width={135} height={35} />
+							</div>
+							<div className="flex justify-end gap-2">
+								<Skeleton width={35} height={35} />
+								<Skeleton width={35} height={35} />
+								<Skeleton width={35} height={35} />
+								<Skeleton width={35} height={35} />
+							</div>
+						</Container>
+						{/* Task Input Skeleton */}
+						<Container fullWidth={fullWidth} className="pt-12 pb-2">
+							<Skeleton className="bg-white dark:bg-dark-high w-full h-36 " borderRadius={30} />
+							<div className="flex  items-center w-full py-10">
+								<div className="w-1/5">
+									<Skeleton width={140} height={20} />
+								</div>
+								<div className="w-2/5">
+									<Skeleton width={380} height={20} />
+								</div>
+								<div className="w-1/5">
+									<Skeleton width={160} height={20} />
+								</div>
+								<div className="w-1/5">
+									<Skeleton width={100} height={20} />
+								</div>
+							</div>
+						</Container>
+					</div>
+					<div className=" w-full py-4">
+						<Container fullWidth={fullWidth} className="flex flex-col items-stretch pt-4 gap-6">
+							<Skeleton className="bg-white dark:bg-dark-high w-full h-36 " borderRadius={25} />
+							<Skeleton className="bg-white dark:bg-dark-high w-full h-36 " borderRadius={25} />
+							<Skeleton className="bg-white dark:bg-dark-high w-full h-36 " borderRadius={25} />
+						</Container>
+					</div>
+				</>
+			)}
 		</div>
 	);
 };

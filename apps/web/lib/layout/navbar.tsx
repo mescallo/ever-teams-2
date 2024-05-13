@@ -16,19 +16,24 @@ import { useTranslations } from 'next-intl';
 import Skeleton from 'react-loading-skeleton';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { fullWidthState } from '@app/stores/fullWidth';
+import { cn } from 'lib/utils';
 
-const HeaderSkeleton = () => {
+export const HeaderSkeleton = () => {
+	const fullWidth = useRecoilValue(fullWidthState);
+
 	return (
-		<nav className="mx-10 flex justify-between h-0 border-b">
-			<Skeleton width={150} height={40} className="my-6" />
-			<div className="my-4 flex">
-				<Skeleton width={145} height={48} borderRadius={12} className="mr-4" />
-				<Skeleton width={218} height={46} className="mr-5" borderRadius={12} />
-				<Skeleton width={30} height={30} borderRadius={10} className="mr-8 mt-3" />
+		<Container fullWidth={fullWidth} className={cn('w-full ', fullWidth && 'mx-0')}>
+			<nav className={cn('mr-0 flex justify-between', fullWidth && 'px-4')}>
+				<Skeleton width={150} height={40} className="my-6" />
+				<div className="my-4 flex">
+					<Skeleton width={145} height={48} borderRadius={12} className="mr-4" />
+					<Skeleton width={218} height={46} className="mr-5" borderRadius={12} />
+					<Skeleton width={30} height={30} borderRadius={10} className="mr-8 mt-3" />
 
-				<Skeleton width={50} height={50} circle />
-			</div>
-		</nav>
+					<Skeleton width={50} height={50} circle />
+				</div>
+			</nav>
+		</Container>
 	);
 };
 
